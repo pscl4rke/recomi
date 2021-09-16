@@ -4,6 +4,8 @@ import argparse
 import os
 import sys
 
+import git
+
 
 class Collection:
 
@@ -16,14 +18,14 @@ class Collection:
         for name in sorted(os.listdir(self.base_path)):
             path = os.path.join(self.base_path, name)
             if os.path.isdir(path):
-                yield path
+                yield git.GitRepo(path)
 
 
 def handle_fetch(opts):
     for collection in opts.collections:
         print(collection.base_path)
         for repo in collection.repositories():
-            print("  Want to fetch in %s" % repo)
+            repo.fetch()
 
 
 def command(value):
