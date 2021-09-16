@@ -39,3 +39,10 @@ class GitRepo:
             return_code = subprocess.call(args)
             if return_code != 0:
                 raise CmdError("Failed")
+
+    def gc(self):
+        args = ["git", "gc"]
+        with cd(self.path):
+            return_code = subprocess.call(args)
+            if return_code != 0:
+                raise CmdError("Failed")

@@ -40,9 +40,15 @@ def do_fetch(opts, repo):
     repo.fetch()
 
 
+def do_gc(opts, repo):
+    repo.gc()
+
+
 def command(value):
     if value == "fetch":
         return lambda opts: for_each_repo(opts, do_fetch)
+    elif value == "gc":
+        return lambda opts: for_each_repo(opts, do_gc)
     else:
         raise ValueError("No such command %r" % value)
 
