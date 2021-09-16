@@ -1,18 +1,7 @@
 
 
-import contextlib
 import os
 import subprocess
-
-
-@contextlib.contextmanager
-def cd(path):
-    currentdir = os.getcwd()
-    os.chdir(path)
-    try:
-        yield
-    finally:
-        os.chdir(currentdir)
 
 
 class CmdError(Exception):
@@ -35,14 +24,12 @@ class GitRepo:
             args = ["git", "fetch", "--all"]
         else:
             args = ["git", "pull"]
-        with cd(self.path):
-            return_code = subprocess.call(args)
-            if return_code != 0:
-                raise CmdError("Failed")
+        return_code = subprocess.call(args, cwd=self.path)
+        if return_code != 0:
+            raise CmdError("Failed")
 
     def gc(self):
         args = ["git", "gc"]
-        with cd(self.path):
-            return_code = subprocess.call(args)
-            if return_code != 0:
-                raise CmdError("Failed")
+        return_code = subprocess.call(args, cwd=self.path)
+        if return_code != 0:
+            raise CmdError("Failed")
