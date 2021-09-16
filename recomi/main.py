@@ -21,13 +21,13 @@ class Collection:
                 yield git.GitRepo(path)
 
 
-def handle_fetch(opts):
+def for_each_repo(opts, func):
     failures = []
     for collection in opts.collections:
         print(collection.base_path)
         for repo in collection.repositories():
             try:
-                repo.fetch()
+                func(opts, repo)
             except git.CmdError:
                 failures.append((collection, repo))
     for collection, repo in failures:
@@ -36,9 +36,13 @@ def handle_fetch(opts):
         sys.exit(1)
 
 
+def do_fetch(opts, repo):
+    repo.fetch()
+
+
 def command(value):
     if value == "fetch":
-        return handle_fetch
+        return lambda opts: for_each_repo(opts, do_fetch)
     else:
         raise ValueError("No such command %r" % value)
 
