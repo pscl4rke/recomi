@@ -15,6 +15,10 @@ def cd(path):
         os.chdir(currentdir)
 
 
+class CmdError(Exception):
+    pass
+
+
 class GitRepo:
 
     def __init__(self, path):
@@ -32,4 +36,6 @@ class GitRepo:
         else:
             args = ["git", "pull"]
         with cd(self.path):
-            subprocess.call(args)
+            return_code = subprocess.call(args)
+            if return_code != 0:
+                raise CmdError("Failed")

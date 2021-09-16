@@ -22,10 +22,18 @@ class Collection:
 
 
 def handle_fetch(opts):
+    failures = []
     for collection in opts.collections:
         print(collection.base_path)
         for repo in collection.repositories():
-            repo.fetch()
+            try:
+                repo.fetch()
+            except git.CmdError:
+                failures.append((collection, repo))
+    for collection, repo in failures:
+        print("Failed: %s" % repo.path)
+    if failures:
+        sys.exit(1)
 
 
 def command(value):
