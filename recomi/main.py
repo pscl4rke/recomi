@@ -7,6 +7,16 @@ import sys
 import git
 
 
+def info(msg):
+    sys.stdout.write("%s\n" % msg)
+    sys.stdout.flush()
+
+
+def warn(msg):
+    sys.stderr.write("%s\n" % msg)
+    sys.stderr.flush()
+
+
 class Collection:
 
     def __init__(self, base_path):
@@ -24,14 +34,14 @@ class Collection:
 def for_each_repo(opts, func):
     failures = []
     for collection in opts.collections:
-        print(collection.base_path)
+        info("Collection: %s" % collection.base_path)
         for repo in collection.repositories():
+            info("Repository: %s" % repo.path)
             try:
                 func(opts, repo)
             except git.CmdError:
+                warn("Failed: %s" % repo.path)
                 failures.append((collection, repo))
-    for collection, repo in failures:
-        print("Failed: %s" % repo.path)
     if failures:
         sys.exit(1)
 

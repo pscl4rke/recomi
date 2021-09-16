@@ -24,12 +24,12 @@ class GitRepo:
             args = ["git", "fetch", "--all"]
         else:
             args = ["git", "pull"]
-        return_code = subprocess.call(args, cwd=self.path)
+        return_code = subprocess.call(args, cwd=self.path, stderr=subprocess.STDOUT)
         if return_code != 0:
             raise CmdError("Failed")
 
     def gc(self):
         args = ["git", "gc"]
-        return_code = subprocess.call(args, cwd=self.path)
+        return_code = subprocess.call(args, cwd=self.path, stderr=subprocess.STDOUT)
         if return_code != 0:
             raise CmdError("Failed")
