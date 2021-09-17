@@ -1,5 +1,17 @@
 
+# Recomi -- The Repository Collection Mirror
 
+Batch-orientated tool for keeping local collections of git repositories
+mirroring their remote upstream counterparts.
+
+## Usage
+
+    $ recomi fetch /path/to/collection1 /path/to/collection2...
+    $ recomi gc /path/to/collection1 /path/to/collection2...
+
+## Installation
+
+    $ pip install git+https://github.com/pscl4rke/recomi.git
 
 ## Usage with Cron
 

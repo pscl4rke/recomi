@@ -4,7 +4,7 @@ import argparse
 import os
 import sys
 
-import git
+from . import git
 
 
 def info(msg):
