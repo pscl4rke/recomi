@@ -4,6 +4,15 @@
 Batch-orientated tool for keeping local collections of git repositories
 mirroring their remote upstream counterparts.
 
+Each "collection" is a directory that contains repositories.
+Normally the repositories would be `--mirror` ones,
+but this works with ordinary clones too.
+
+Currently this tool is little more than `git fetch` in a `for` loop.
+But in time it will gain capabilities for detecting new repos becoming
+available upsream and automatically cloning them.
+(Famous last words!)
+
 ## Usage
 
     $ recomi fetch /path/to/collection1 /path/to/collection2...
