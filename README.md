@@ -24,3 +24,7 @@ a log somewhere while letting cron collect up stderr and send it as
 an email:
 
     8 4 * * * recomi fetch /path/to/dir | logger -t recomi-dir
+
+## Licence
+
+This software is licensed under the GPLv3.
