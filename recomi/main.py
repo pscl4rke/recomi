@@ -34,11 +34,12 @@ class Collection:
 def for_each_repo(opts, func):
     failures = []
     for collection in opts.collections:
-        info("Collection: %s" % collection.base_path)
+        info("\nCollection: %s" % collection.base_path)
         for repo in collection.repositories():
-            info("Repository: %s" % repo.path)
+            info("\nRepository: %s" % repo.path)
             try:
                 func(opts, repo)
+                info("Done")
             except git.CmdError:
                 warn("Failed: %s" % repo.path)
                 failures.append((collection, repo))
