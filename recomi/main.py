@@ -21,7 +21,7 @@ class Collection:
 
     def __init__(self, base_path):
         if not os.path.isdir(base_path):
-            return ValueError("Invalid base directory: %r" % base_path)
+            raise ValueError("Invalid base directory: %r" % base_path)
         self.base_path = base_path
 
     def repositories(self):
