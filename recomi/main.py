@@ -19,8 +19,9 @@ def warn(msg):
 
 class LoopingCommand:
 
-    def __init__(self, thing_to_do):
-        self.thing_to_do = thing_to_do
+    def __init__(self, fetch=False, gc=False):
+        self.should_fetch = fetch
+        self.should_gc = gc
 
     def run(self, opts):
         failures = []
@@ -29,7 +30,10 @@ class LoopingCommand:
             for repo in collection.repositories():
                 info("\nRepository: %s" % repo.path)
                 try:
-                    self.thing_to_do(opts, repo)
+                    if self.should_fetch:
+                        repo.fetch()
+                    if self.should_gc:
+                        repo.gc()
                     info("Done")
                 except git.CmdError:
                     warn("Failed: %s" % repo.path)
@@ -38,19 +42,11 @@ class LoopingCommand:
             sys.exit(1)
 
 
-def do_fetch(opts, repo):
-    repo.fetch()
-
-
-def do_gc(opts, repo):
-    repo.gc()
-
-
 def command(value):
     if value == "fetch":
-        return LoopingCommand(do_fetch)
+        return LoopingCommand(fetch=True)
     elif value == "gc":
-        return LoopingCommand(do_gc)
+        return LoopingCommand(gc=True)
     else:
         raise ValueError("No such command %r" % value)
 
