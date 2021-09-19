@@ -17,20 +17,25 @@ def warn(msg):
     sys.stderr.flush()
 
 
-def for_each_repo(opts, func):
-    failures = []
-    for collection in opts.collections:
-        info("\nCollection: %s" % collection.base_path)
-        for repo in collection.repositories():
-            info("\nRepository: %s" % repo.path)
-            try:
-                func(opts, repo)
-                info("Done")
-            except git.CmdError:
-                warn("Failed: %s" % repo.path)
-                failures.append((collection, repo))
-    if failures:
-        sys.exit(1)
+class LoopingCommand:
+
+    def __init__(self, thing_to_do):
+        self.thing_to_do = thing_to_do
+
+    def run(self, opts):
+        failures = []
+        for collection in opts.collections:
+            info("\nCollection: %s" % collection.base_path)
+            for repo in collection.repositories():
+                info("\nRepository: %s" % repo.path)
+                try:
+                    self.thing_to_do(opts, repo)
+                    info("Done")
+                except git.CmdError:
+                    warn("Failed: %s" % repo.path)
+                    failures.append((collection, repo))
+        if failures:
+            sys.exit(1)
 
 
 def do_fetch(opts, repo):
@@ -43,9 +48,9 @@ def do_gc(opts, repo):
 
 def command(value):
     if value == "fetch":
-        return lambda opts: for_each_repo(opts, do_fetch)
+        return LoopingCommand(do_fetch)
     elif value == "gc":
-        return lambda opts: for_each_repo(opts, do_gc)
+        return LoopingCommand(do_gc)
     else:
         raise ValueError("No such command %r" % value)
 
@@ -60,7 +65,7 @@ def parse_args(args):
 
 def main():
     opts = parse_args(sys.argv[1:])
-    opts.command(opts)
+    opts.command.run(opts)
 
 
 if __name__ == "__main__":
