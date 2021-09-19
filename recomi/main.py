@@ -4,6 +4,7 @@ import argparse
 import sys
 
 from . import git
+from . import collecting
 
 
 def info(msg):
@@ -52,7 +53,7 @@ def command(value):
 def parse_args(args):
     parser = argparse.ArgumentParser()
     parser.add_argument("command", type=command)
-    parser.add_argument("collections", nargs="+", type=Collection)
+    parser.add_argument("collections", nargs="+", type=collecting.Collection)
     opts = parser.parse_args(args)
     return opts
 

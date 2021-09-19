@@ -1,13 +1,14 @@
 
 
 import unittest
+from unittest import mock
 
 from recomi import main
 
 
-class TestPlaceholder(unittest.TestCase):
+class TestOptionParsing(unittest.TestCase):
 
-    # Mostly all this test suite can do is check for syntax errors
-
-    def test_example(self):
-        self.assertTrue(True)
+    def test_no_args(self):
+        with mock.patch("argparse.ArgumentParser.error") as error_handler:
+            opts = main.parse_args([])
+        error_handler.assert_called_once()
