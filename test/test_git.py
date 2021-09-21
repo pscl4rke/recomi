@@ -5,10 +5,19 @@ import unittest
 from recomi import git
 
 
-class TestPlaceholder(unittest.TestCase):
+class TestLocal(unittest.TestCase):
 
-    # Mostly all this test suite can do is check for syntax errors
+    def test_bare_name(self):
+        repo = git.LocalGitRepo("/path/to/repo.git")
+        self.assertEqual(repo.name, "repo")
 
-    def test_example(self):
-        repo = git.GitRepo("/path/to/repo")
+    def test_name(self):
+        repo = git.LocalGitRepo("/path/to/repo")
+        self.assertEqual(repo.name, "repo")
+
+
+class TestUpstream(unittest.TestCase):
+
+    def test_upstream(self):
+        repo = git.UpstreamGitRepo("foobar")
         self.assertTrue(True)

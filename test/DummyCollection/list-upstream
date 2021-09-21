@@ -1,0 +1,6 @@
+#!/bin/sh
+# We run this script so that the test suite can check that
+# the subprocess uses the correct working directory
+echo one
+echo two
+echo three

@@ -13,31 +13,37 @@ def info(msg):
 
 
 def warn(msg):
-    sys.stderr.write("%s\n" % msg)
+    sys.stderr.write("WARNING: recomi: %s\n" % msg)
     sys.stderr.flush()
 
 
 class LoopingCommand:
 
-    def __init__(self, fetch=False, gc=False):
+    def __init__(self, fetch=False, gc=False, clone=False):
         self.should_fetch = fetch
         self.should_gc = gc
+        self.should_clone = clone
 
     def run(self, opts):
         failures = []
         for collection in opts.collections:
             info("\nCollection: %s" % collection.base_path)
-            for repo in collection.repositories():
-                info("\nRepository: %s" % repo.path)
+            for repo in collection.local_repos():
                 try:
                     if self.should_fetch:
+                        info("\n[BEGIN fetch %s]" % repo.path)
                         repo.fetch()
+                        info("[END fetch]")
                     if self.should_gc:
+                        info("\n[BEGIN gc %s]" % repo.path)
                         repo.gc()
-                    info("Done")
+                        info("[END gc]")
                 except git.CmdError:
                     warn("Failed: %s" % repo.path)
                     failures.append((collection, repo))
+            if self.should_clone:
+                for repo in collection.missing_repos():
+                    warn("I cannot clone %r" % repo.name)
         if failures:
             sys.exit(1)
 
@@ -47,6 +53,8 @@ def command(value):
         return LoopingCommand(fetch=True)
     elif value == "gc":
         return LoopingCommand(gc=True)
+    elif value == "clone":
+        return LoopingCommand(clone=True)
     else:
         raise ValueError("No such command %r" % value)
 

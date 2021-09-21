@@ -8,10 +8,17 @@ class CmdError(Exception):
     pass
 
 
-class GitRepo:
+class LocalGitRepo:
 
     def __init__(self, path):
         self.path = path
+        self.name = self.work_out_name()
+
+    def work_out_name(self):
+        name = os.path.basename(self.path)
+        if name.endswith(".git"):
+            name = name[:-4]
+        return name
 
     def is_a_bare_repo(self):
         if os.path.exists(os.path.join(self.path, ".git")):
@@ -33,3 +40,9 @@ class GitRepo:
         return_code = subprocess.call(args, cwd=self.path, stderr=subprocess.STDOUT)
         if return_code != 0:
             raise CmdError("Failed")
+
+
+class UpstreamGitRepo:
+
+    def __init__(self, name):
+        self.name = name
