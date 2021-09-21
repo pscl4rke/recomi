@@ -65,7 +65,7 @@ class UpstreamGitRepo:
         return args
 
     def clone(self, parent):
-        args = ["echo", "want", "to", "run", *self.clone_args()]
+        args = self.clone_args()
         return_code = subprocess.call(args, cwd=parent, stderr=subprocess.STDOUT)
         if return_code != 0:
             raise CmdError("Failed")
