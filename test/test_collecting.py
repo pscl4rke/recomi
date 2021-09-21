@@ -30,6 +30,9 @@ class TestDummyCollectionWithConfig(unittest.TestCase):
     def test_type(self):
         self.assertEqual(self.collection.repo_type(), "mirror")
 
+    def test_warn_of_new_clone(self):
+        self.assertEqual(self.collection.warn_of_new_clone(), True)
+
     def test_upstream_repos(self):
         repos = list(self.collection.upstream_repos())
         self.assertEqual(len(repos), 3)

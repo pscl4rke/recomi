@@ -43,7 +43,8 @@ class LoopingCommand:
                     failures.append((collection, repo))
             if self.should_clone:
                 for repo in collection.missing_repos():
-                    #warn("I cannot clone %r into %r" % (repo.clone_from, repo.dest()))
+                    if collection.warn_of_new_clone():
+                        warn("New repository detected: %s" % repo.clone_from)
                     try:
                         repo.clone(collection.base_path)
                     except git.CmdError:

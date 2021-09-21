@@ -53,3 +53,6 @@ class Collection:
         if repo_type not in ("mirror", "bare", "working"):
             raise ValueError("Invalid type: %r" % repo_type)
         return repo_type
+
+    def warn_of_new_clone(self):
+        return self.config["clone"].get("warn", True)
