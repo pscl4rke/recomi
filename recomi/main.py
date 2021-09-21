@@ -43,12 +43,14 @@ class LoopingCommand:
                     failures.append((collection, repo))
             if self.should_clone:
                 for repo in collection.missing_repos():
-                    if collection.warn_of_new_clone():
-                        warn("New repository detected: %s" % repo.clone_from)
                     try:
+                        info("\n[BEGIN clone %s]" % repo.clone_from)
+                        if collection.warn_of_new_clone():
+                            warn("New repository detected: %s" % repo.clone_from)
                         repo.clone(collection.base_path)
+                        info("[END clone]")
                     except git.CmdError:
-                        warn("Failed: %s" % repo.path)
+                        warn("Failed: %s" % repo.clone_from)
                         failures.append((collection, repo))
         if failures:
             sys.exit(1)
@@ -61,6 +63,8 @@ def command(value):
         return LoopingCommand(gc=True)
     elif value == "clone":
         return LoopingCommand(clone=True)
+    elif value == "mirror":
+        return LoopingCommand(fetch=True, gc=True, clone=True)
     else:
         raise ValueError("No such command %r" % value)
 
