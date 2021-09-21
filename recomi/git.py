@@ -44,5 +44,6 @@ class LocalGitRepo:
 
 class UpstreamGitRepo:
 
-    def __init__(self, name):
+    def __init__(self, name, clone_from):
         self.name = name
+        self.clone_from = clone_from

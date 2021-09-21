@@ -23,6 +23,10 @@ class TestDummyCollectionWithConfig(unittest.TestCase):
         names = self.collection.upstream_list()
         self.assertEqual(names, ["one", "two", "three"])
 
+    def test_url_for(self):
+        expected = "https://example.com/foo/bar/reponame.git"
+        self.assertEqual(self.collection.url_for("reponame"), expected)
+
     def test_upstream_repos(self):
         repos = list(self.collection.upstream_repos())
         self.assertEqual(len(repos), 3)
