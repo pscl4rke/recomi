@@ -25,7 +25,7 @@ class LoopingCommand:
         self.should_clone = clone
 
     def run(self, opts):
-        failures = []
+        failures = 0
         for collection in opts.collections:
             info("\nCollection: %s" % collection.base_path)
             for repo in collection.local_repos():
@@ -40,8 +40,12 @@ class LoopingCommand:
                         info("[END gc]")
                 except git.CmdError:
                     warn("Failed: %s" % repo.path)
-                    failures.append((collection, repo))
+                    failures = failures + 1
             if self.should_clone:
+                if collection.clone_not_configured():
+                    warn("Invalid configuration for clone in %s" % collection.base_path)
+                    failures = failures + 1
+                    continue
                 for repo in collection.missing_repos():
                     try:
                         info("\n[BEGIN clone %s]" % repo.clone_from)
@@ -51,8 +55,10 @@ class LoopingCommand:
                         info("[END clone]")
                     except git.CmdError:
                         warn("Failed: %s" % repo.clone_from)
-                        failures.append((collection, repo))
+                        failures = failures + 1
         if failures:
+            warn("==============================")
+            warn("Overall there were %i failures" % failures)
             sys.exit(1)
 
 

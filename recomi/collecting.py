@@ -21,6 +21,14 @@ class Collection:
         if os.path.exists(config_path):
             self.config.read(config_path)
 
+    def clone_not_configured(self):
+        if "clone" not in self.config.sections():
+            return True
+        if "list" not in self.config["clone"]:
+            return True
+        if "url" not in self.config["clone"]:
+            return True
+
     def local_repos(self):
         for name in sorted(os.listdir(self.base_path)):
             path = os.path.join(self.base_path, name)
