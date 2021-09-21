@@ -40,10 +40,16 @@ class Collection:
         for name in self.upstream_list():
             if name.endswith(".git"):
                 name = name[:-4]
-            yield git.UpstreamGitRepo(name, self.url_for(name))
+            yield git.UpstreamGitRepo(name, self.url_for(name), self.repo_type())
 
     def missing_repos(self):
         local_names = [repo.name for repo in self.local_repos()]
         for repo in self.upstream_repos():
             if repo.name not in local_names:
                 yield repo
+
+    def repo_type(self):
+        repo_type = self.config["clone"].get("type", "mirror")
+        if repo_type not in ("mirror", "bare", "working"):
+            raise ValueError("Invalid type: %r" % repo_type)
+        return repo_type

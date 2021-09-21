@@ -27,6 +27,9 @@ class TestDummyCollectionWithConfig(unittest.TestCase):
         expected = "https://example.com/foo/bar/reponame.git"
         self.assertEqual(self.collection.url_for("reponame"), expected)
 
+    def test_type(self):
+        self.assertEqual(self.collection.repo_type(), "mirror")
+
     def test_upstream_repos(self):
         repos = list(self.collection.upstream_repos())
         self.assertEqual(len(repos), 3)

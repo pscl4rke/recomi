@@ -18,6 +18,6 @@ class TestLocal(unittest.TestCase):
 
 class TestUpstream(unittest.TestCase):
 
-    def test_upstream(self):
-        repo = git.UpstreamGitRepo("foobar", "host:user/foobar.git")
-        self.assertTrue(True)
+    def test_dest(self):
+        repo = git.UpstreamGitRepo("foobar", "host:user/foobar.git", "mirror")
+        self.assertEqual(repo.dest(), "foobar.git")
