@@ -28,15 +28,22 @@ class LocalGitRepo:
 
     def fetch(self):
         if self.is_a_bare_repo():
-            args = ["git", "fetch", "--all"]
+            args = ["git",
+                    "-c", "gc.autoDetach=false",
+                    "fetch", "--all"]
         else:
-            args = ["git", "pull"]
+            args = ["git",
+                    "-c", "gc.autoDetach=false",
+                    "pull"]
         return_code = subprocess.call(args, cwd=self.path, stderr=subprocess.STDOUT)
         if return_code != 0:
             raise CmdError("Failed")
 
     def gc(self):
-        args = ["git", "gc"]
+        args = ["git",
+                "-c", "gc.autoDetach=false",
+                "-c", "gc.auto=1",  # git defaults to 6700
+                "gc", "--auto"]
         return_code = subprocess.call(args, cwd=self.path, stderr=subprocess.STDOUT)
         if return_code != 0:
             raise CmdError("Failed")
