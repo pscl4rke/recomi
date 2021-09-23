@@ -87,6 +87,9 @@ might be better suited to you.
 By running `make dev` you can create a development virtualenv,
 and can run `./dev/venv/bin/recomi` to test out the program.
 
+By setting the environment variable `RECOMI_DRY_RUN=True` you can see which
+`git` commands would have been run without actually running them.
+
 ## Licence
 
 This software is licensed under the GPLv3.

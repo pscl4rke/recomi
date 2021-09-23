@@ -4,6 +4,9 @@ import os
 import subprocess
 
 
+DRY_RUN = os.environ.get("RECOMI_DRY_RUN", "FALSE").lower().startswith("t")
+
+
 class CmdError(Exception):
     pass
 
@@ -11,6 +14,9 @@ class CmdError(Exception):
 class Repo:
 
     def _run(self, cwd, args):
+        if DRY_RUN:
+            print("I would have run %r" % args)
+            return
         return_code = subprocess.call(args, cwd=cwd, stderr=subprocess.STDOUT)
         if return_code != 0:
             raise CmdError("Failed")
