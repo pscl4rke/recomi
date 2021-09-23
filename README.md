@@ -49,6 +49,16 @@ Also use `type` set to either `working`, `mirror` or `bare` to describe
 what type of clone to make.
 It is optional and defaults to `mirror`.
 
+By default recomi will warn you (on stderr) when it clones a new repository.
+Set `warn` to false to clone without a warning.
+
+Another example:
+
+    [clone]
+    list = ssh mygithost list | grep -v bigrepo
+    url = mygithost:{name}.git
+    type = working
+
 ## Usage with Cron
 
 Note that `recomi` distinguishes between routine output,
@@ -71,6 +81,11 @@ then look into whether
 or [gitbatch](https://github.com/isacikgoz/gitbatch)
 might be better suited to you.
 * Recomi currently doesn't handle submodules.
+
+## Debugging
+
+By running `make dev` you can create a development virtualenv,
+and can run `./dev/venv/bin/recomi` to test out the program.
 
 ## Licence
 
