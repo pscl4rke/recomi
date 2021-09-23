@@ -81,6 +81,12 @@ then look into whether
 or [gitbatch](https://github.com/isacikgoz/gitbatch)
 might be better suited to you.
 * Recomi currently doesn't handle submodules.
+* Recomi is vulnerable to forced updates.
+Because the default `--mirror` clone leaves `remote.origin.fetch` set to `+refs/*:refs/*`
+(with a plus sign at the front)
+it will warn but not block history rewriting.
+Removing the plus from the refspec is a solution.
+The practicality of this is uncertain.
 
 ## Debugging
 
