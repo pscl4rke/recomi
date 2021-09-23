@@ -42,8 +42,9 @@ class LoopingCommand:
                     warn("Failed: %s" % repo.path)
                     failures = failures + 1
             if self.should_clone:
-                if collection.clone_not_configured():
-                    warn("Invalid configuration for clone in %s" % collection.base_path)
+                errors = collection.clone_not_configured()
+                if len(errors) > 0:
+                    warn("Invalid configuration for clone: %r" % errors)
                     failures = failures + 1
                     continue
                 for repo in collection.missing_repos():

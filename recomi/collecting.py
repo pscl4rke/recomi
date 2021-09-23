@@ -23,11 +23,13 @@ class Collection:
 
     def clone_not_configured(self):
         if "clone" not in self.config.sections():
-            return True
+            return ["Missing [clone] section"]
+        errors = []
         if "list" not in self.config["clone"]:
-            return True
+            errors.append("Missing [clone].list option")
         if "url" not in self.config["clone"]:
-            return True
+            errors.append("Missing [clone].url option")
+        return errors
 
     def local_repos(self):
         for name in sorted(os.listdir(self.base_path)):
