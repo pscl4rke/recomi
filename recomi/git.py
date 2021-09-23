@@ -8,7 +8,15 @@ class CmdError(Exception):
     pass
 
 
-class LocalGitRepo:
+class Repo:
+
+    def _run(self, cwd, args):
+        return_code = subprocess.call(args, cwd=cwd, stderr=subprocess.STDOUT)
+        if return_code != 0:
+            raise CmdError("Failed")
+
+
+class LocalGitRepo(Repo):
 
     def __init__(self, path):
         self.path = path
@@ -35,21 +43,17 @@ class LocalGitRepo:
             args = ["git",
                     "-c", "gc.autoDetach=false",
                     "pull"]
-        return_code = subprocess.call(args, cwd=self.path, stderr=subprocess.STDOUT)
-        if return_code != 0:
-            raise CmdError("Failed")
+        self._run(self.path, args)
 
     def gc(self):
         args = ["git",
                 "-c", "gc.autoDetach=false",
                 "-c", "gc.auto=1",  # git defaults to 6700
                 "gc", "--auto"]
-        return_code = subprocess.call(args, cwd=self.path, stderr=subprocess.STDOUT)
-        if return_code != 0:
-            raise CmdError("Failed")
+        self._run(self.path, args)
 
 
-class UpstreamGitRepo:
+class UpstreamGitRepo(Repo):
 
     def __init__(self, name, clone_from, repo_type):
         self.name = name
@@ -72,7 +76,4 @@ class UpstreamGitRepo:
         return args
 
     def clone(self, parent):
-        args = self.clone_args()
-        return_code = subprocess.call(args, cwd=parent, stderr=subprocess.STDOUT)
-        if return_code != 0:
-            raise CmdError("Failed")
+        self._run(parent, self.clone_args())
