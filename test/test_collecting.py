@@ -6,6 +6,18 @@ import unittest
 from recomi import collecting
 
 
+class TestPathToName(unittest.TestCase):
+
+    def test_ordinary(self):
+        self.assertEqual(collecting.path_to_name("foo"), "foo")
+
+    def test_bare(self):
+        self.assertEqual(collecting.path_to_name("foo.git"), "foo")
+
+    def test_path(self):
+        self.assertEqual(collecting.path_to_name("baz/bar/foo.git"), "foo")
+
+
 class TestMissingCollection(unittest.TestCase):
 
     def test_cannot_be_instantiated(self):
@@ -25,7 +37,7 @@ class TestDummyCollectionWithConfig(unittest.TestCase):
 
     def test_url_for(self):
         expected = "https://example.com/foo/bar/reponame.git"
-        self.assertEqual(self.collection.url_for("reponame"), expected)
+        self.assertEqual(self.collection.url_for("reponame", "zzz/reponame"), expected)
 
     def test_type(self):
         self.assertEqual(self.collection.repo_type(), "mirror")

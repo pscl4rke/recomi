@@ -7,6 +7,13 @@ import subprocess
 from . import git
 
 
+def path_to_name(path):
+    name = os.path.basename(path)
+    if name.endswith(".git"):
+        name = name[:-4]
+    return name
+
+
 class Collection:
 
     def __init__(self, base_path):
@@ -42,15 +49,14 @@ class Collection:
         output = subprocess.check_output(cmd, shell=True, cwd=self.base_path)
         return output.decode("ascii").splitlines()
 
-    def url_for(self, name):
+    def url_for(self, name, path):
         pattern = self.config["clone"]["url"]
-        return pattern.format(name=name)
+        return pattern.format(name=name, path=path)
 
     def upstream_repos(self):
-        for name in self.upstream_list():
-            if name.endswith(".git"):
-                name = name[:-4]
-            yield git.UpstreamGitRepo(name, self.url_for(name), self.repo_type())
+        for path in self.upstream_list():
+            name = path_to_name(path)
+            yield git.UpstreamGitRepo(name, self.url_for(name, path), self.repo_type())
 
     def missing_repos(self):
         local_names = [repo.name for repo in self.local_repos()]
