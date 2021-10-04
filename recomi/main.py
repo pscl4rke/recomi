@@ -13,7 +13,10 @@ def info(msg):
 
 
 def warn(msg):
-    sys.stderr.write("WARNING: recomi: %s\n" % msg)
+    if sys.stderr.isatty():
+        sys.stderr.write("\033[31;1mWARNING:\033[0m recomi: %s\n" % msg)
+    else:
+        sys.stderr.write("WARNING: recomi: %s\n" % msg)
     sys.stderr.flush()
 
 
