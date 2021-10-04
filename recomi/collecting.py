@@ -8,6 +8,8 @@ from . import git
 
 
 def path_to_name(path):
+    if ":" in path:
+        ssh_host, colon, path = path.partition(":")
     name = os.path.basename(path)
     if name.endswith(".git"):
         name = name[:-4]
