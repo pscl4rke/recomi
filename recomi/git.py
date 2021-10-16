@@ -41,14 +41,15 @@ class LocalGitRepo(Repo):
             return True
 
     def fetch(self):
+        args = [
+            "git",
+            "-c", "gc.autoDetach=false",
+            "-c", "fetch.fsckObjects=true",
+        ]
         if self.is_a_bare_repo():
-            args = ["git",
-                    "-c", "gc.autoDetach=false",
-                    "fetch", "--all"]
+            args.extend(["fetch", "--all"])
         else:
-            args = ["git",
-                    "-c", "gc.autoDetach=false",
-                    "pull"]
+            args.extend(["pull"])
         self._run(self.path, args)
 
     def gc(self):
