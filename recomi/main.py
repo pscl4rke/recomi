@@ -2,6 +2,7 @@
 
 import argparse
 import sys
+import time
 
 from . import git
 from . import collecting
@@ -28,6 +29,7 @@ class LoopingCommand:
         self.should_clone = clone
 
     def run(self, opts):
+        start_run = time.time()
         failures = 0
         for collection in opts.collections:
             info("\nCollection: %s" % collection.base_path)
@@ -60,6 +62,8 @@ class LoopingCommand:
                     except git.CmdError:
                         warn("Failed: %s" % repo.clone_from)
                         failures = failures + 1
+        duration = time.time() - start_run
+        info("\nRecomi finished in %i seconds" % duration)
         if failures:
             warn("==============================")
             warn("Overall there were %i failures" % failures)
