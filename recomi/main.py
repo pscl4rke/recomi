@@ -6,6 +6,10 @@ import time
 
 from . import git
 from . import collecting
+from . import __version__
+
+
+DESCRIPTION = "Repository Collection Mirror (version %s)" % __version__
 
 
 def info(msg):
@@ -84,7 +88,7 @@ def command(value):
 
 
 def parse_args(args):
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(description=DESCRIPTION)
     parser.add_argument("command", type=command)
     parser.add_argument("collections", nargs="+", type=collecting.Collection)
     opts = parser.parse_args(args)
