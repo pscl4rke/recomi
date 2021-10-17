@@ -68,7 +68,7 @@ class Collection:
 
     def repo_type(self):
         repo_type = self.config["clone"].get("type", "mirror")
-        if repo_type not in ("mirror", "bare", "working"):
+        if repo_type not in ("mirror", "mirror-ff", "bare", "working"):
             raise ValueError("Invalid type: %r" % repo_type)
         return repo_type
 

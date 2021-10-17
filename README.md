@@ -45,9 +45,11 @@ Use `url` to turn each listed repository into a clonable SSH/URL pattern.
 It will replace `{path}` with the full path that `list` returned,
 and will replace `{name}` with just the name part.
 
-Also use `type` set to either `working`, `mirror` or `bare` to describe
+Also use `type` set to either `working`, `mirror`, `mirror-ff` or `bare` to describe
 what type of clone to make.
 It is optional and defaults to `mirror`.
+Using `mirror-ff` is experimental: it rewrites the fetch ref from `+refs/*:refs/*`
+to `refs/*:refs/*` to prevent forced updates and ensure history is preserved.
 
 By default recomi will warn you (on stderr) when it clones a new repository.
 Set `warn` to false to clone without a warning.
@@ -82,12 +84,7 @@ or [gitbatch](https://github.com/isacikgoz/gitbatch)
 might be better suited to you.
 * Recomi currently doesn't handle submodules.
 * Recomi currently doesn't manage hook scripts.
-* Recomi is vulnerable to forced updates.
-Because the default `--mirror` clone leaves `remote.origin.fetch` set to `+refs/*:refs/*`
-(with a plus sign at the front)
-it will warn but not block history rewriting.
-Removing the plus from the refspec is a solution.
-The practicality of this is uncertain.
+* Recomi may be vulnerable to forced updates unless `mirror-ff` is used.
 
 ## Debugging
 

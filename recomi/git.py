@@ -74,7 +74,7 @@ class UpstreamGitRepo(Repo):
 
     def clone_args(self):
         args = ["git", "clone"]
-        if self.repo_type == "mirror":
+        if self.repo_type in ("mirror", "mirror-ff"):
             args.append("--mirror")
         if self.repo_type == "bare":
             args.append("--bare")
@@ -84,3 +84,6 @@ class UpstreamGitRepo(Repo):
 
     def clone(self, parent):
         self._run(parent, self.clone_args())
+        if self.repo_type == "mirror-ff":
+            args = ["git", "config", "remote.origin.fetch", "refs/*:refs/*"]
+            self._run(os.path.join(parent, self.dest()), args)
