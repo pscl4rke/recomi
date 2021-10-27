@@ -1,7 +1,8 @@
 
 # Recomi -- The Repository Collection Mirror
 
-Batch-orientated tool for keeping local collections of git repositories
+Recomi is a
+batch-orientated tool for keeping local collections of git repositories
 mirroring their remote upstream counterparts.
 
 Each "collection" is a directory that contains repositories.
@@ -23,6 +24,12 @@ The `mirror` command is equivalent to running `fetch` then `gc` then
 `clone` for each collection.
 
 ## Installation
+
+To install the last stable version into your current virtualenv run:
+
+    $ pip install recomi
+
+Alternatively you can get the current development version with:
 
     $ pip install git+https://github.com/pscl4rke/recomi.git
 
@@ -90,6 +97,8 @@ might be better suited to you.
 
 By running `make dev` you can create a development virtualenv,
 and can run `./dev/venv/bin/recomi` to test out the program.
+
+Running `make test` will run the test suite.
 
 By setting the environment variable `RECOMI_DRY_RUN=True` you can see which
 `git` commands would have been run without actually running them.
