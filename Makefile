@@ -8,3 +8,7 @@ dev:
 	ln -s ../recomi ../setup.cfg ../setup.py dev/.
 	python3 -m venv dev/venv
 	./dev/venv/bin/pip install --editable ./dev
+
+release:
+	python3 setup.py sdist
+	twine upload dist/*
