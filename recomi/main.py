@@ -47,8 +47,8 @@ class LoopingCommand:
                         info("\n[BEGIN gc %s]" % repo.path)
                         repo.gc()
                         info("[END gc]")
-                except git.CmdError:
-                    warn("Failed: %s" % repo.path)
+                except git.CmdError as exc:
+                    warn("%s: %r" % (repo.path, exc))
                     failures = failures + 1
             if self.should_clone:
                 errors = collection.clone_not_configured()
@@ -63,8 +63,8 @@ class LoopingCommand:
                             warn("New repository detected: %s" % repo.clone_from)
                         repo.clone(collection.base_path)
                         info("[END clone]")
-                    except git.CmdError:
-                        warn("Failed: %s" % repo.clone_from)
+                    except git.CmdError as exc:
+                        warn("%s: %r" % (repo.clone_from, exc))
                         failures = failures + 1
         duration = time.time() - start_run
         info("\nRecomi finished in %i seconds" % duration)
