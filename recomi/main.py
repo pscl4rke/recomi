@@ -69,8 +69,11 @@ class LoopingCommand:
         duration = time.time() - start_run
         info("\nRecomi finished in %i seconds" % duration)
         if failures:
-            warn("==============================")
-            warn("Overall there were %i failures" % failures)
+            warn("================================")
+            if failures == 1:
+                warn("Overall there was %i failure" % failures)
+            else:
+                warn("Overall there were %i failures" % failures)
             sys.exit(1)
 
 
