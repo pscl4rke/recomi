@@ -4,6 +4,8 @@ import configparser
 import os
 import subprocess
 
+from .shared import CmdError
+
 from . import git
 
 
@@ -48,7 +50,10 @@ class Collection:
 
     def upstream_list(self):
         cmd = self.config["clone"]["list"]
-        output = subprocess.check_output(cmd, shell=True, cwd=self.base_path)
+        try:
+            output = subprocess.check_output(cmd, shell=True, cwd=self.base_path)
+        except subprocess.CalledProcessError as exc:
+            raise CmdError("Exit code %i from %s" % (exc.returncode, cmd))
         return output.decode("ascii").splitlines()
 
     def url_for(self, name, path):

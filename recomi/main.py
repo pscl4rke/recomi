@@ -4,6 +4,8 @@ import argparse
 import sys
 import time
 
+from .shared import CmdError
+
 from . import git
 from . import collecting
 from . import __version__
@@ -47,7 +49,7 @@ class LoopingCommand:
                         info("\n[BEGIN gc %s]" % repo.path)
                         repo.gc()
                         info("[END gc]")
-                except git.CmdError as exc:
+                except CmdError as exc:
                     warn("%s: %r" % (repo.path, exc))
                     failures = failures + 1
             if self.should_clone:
@@ -56,14 +58,20 @@ class LoopingCommand:
                     warn("Invalid configuration for clone: %r" % errors)
                     failures = failures + 1
                     continue
-                for repo in collection.missing_repos():
+                try:
+                    missing_repos = list(collection.missing_repos())
+                except CmdError as exc:
+                    warn("list: %r" % exc)
+                    failures = failures + 1
+                    break
+                for repo in missing_repos:
                     try:
                         info("\n[BEGIN clone %s]" % repo.clone_from)
                         if collection.warn_of_new_clone():
                             warn("New repository detected: %s" % repo.clone_from)
                         repo.clone(collection.base_path)
                         info("[END clone]")
-                    except git.CmdError as exc:
+                    except CmdError as exc:
                         warn("%s: %r" % (repo.clone_from, exc))
                         failures = failures + 1
         duration = time.time() - start_run

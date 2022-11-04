@@ -4,6 +4,7 @@ import os
 import unittest
 
 from recomi import collecting
+from recomi.shared import CmdError
 
 
 class TestPathToName(unittest.TestCase):
@@ -59,3 +60,9 @@ class TestDummyCollectionWithConfig(unittest.TestCase):
         self.assertEqual(len(repos), 3)
         self.assertEqual(repos[0].name, "one")
         self.assertEqual(repos[2].name, "three")
+
+    def test_broken_upstream_repos(self):
+        self.collection.config.set("clone", "list", "exit 19")
+        with self.assertRaises(CmdError) as errctx:
+            list(self.collection.upstream_repos())
+        self.assertIn("Exit code 19", repr(errctx.exception))

@@ -3,12 +3,10 @@
 import os
 import subprocess
 
+from .shared import CmdError
+
 
 DRY_RUN = os.environ.get("RECOMI_DRY_RUN", "FALSE").lower().startswith("t")
-
-
-class CmdError(Exception):
-    pass
 
 
 class Repo:
