@@ -16,3 +16,8 @@ release:
 	twine upload dist/*
 	mv *egg-info -i dist
 	mv dist dist.$$(date +%Y%m%d.%H%M%S)
+	@echo
+	@echo
+	@echo REMEMBER TO REBUILD AND REDEPLOY recomi.debian TOO
+	@echo
+	@echo
