@@ -13,6 +13,7 @@ export PYTHON_KEYRING_BACKEND := keyring.backends.null.Keyring
 release:
 	test ! -d dist
 	python3 setup.py sdist
+	twine check dist/*
 	twine upload dist/*
 	mv *egg-info -i dist
 	mv dist dist.$$(date +%Y%m%d.%H%M%S)
@@ -21,3 +22,6 @@ release:
 	@echo REMEMBER TO REBUILD AND REDEPLOY recomi.debian TOO
 	@echo
 	@echo
+
+pre-release-checks:
+	pyroma .
