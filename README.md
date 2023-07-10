@@ -92,6 +92,10 @@ might be better suited to you.
 * Recomi currently doesn't handle submodules.
 * Recomi currently doesn't manage hook scripts.
 * Recomi may be vulnerable to forced updates unless `mirror-ff` is used.
+* Recomi is generally case-sensitive.
+Many collection hosts will consider `foobar` and `FooBar` the same
+and allow for smooth renaming,
+but Recomi will detect this as a new repository and clone from scratch.
 
 ## Debugging
 
