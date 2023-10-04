@@ -17,15 +17,25 @@ class TestPathToName(unittest.TestCase):
 
     def test_path(self):
         self.assertEqual(collecting.path_to_name("baz/bar/foo.git"), "foo")
+        self.assertEqual(collecting.path_to_name("baz/bar/foo.git", onlybase=False),
+                         "baz__bar__foo")
 
     def test_ssh_host_without_path(self):
         self.assertEqual(collecting.path_to_name("bar:foo.git"), "foo")
 
     def test_ssh_host_and_path(self):
         self.assertEqual(collecting.path_to_name("baz:bar/foo.git"), "foo")
+        self.assertEqual(collecting.path_to_name("baz:bar/foo.git", onlybase=False),
+                         "bar__foo")
 
     def test_url(self):
         self.assertEqual(collecting.path_to_name("git://bar/foo.git"), "foo")
+        self.assertEqual(collecting.path_to_name("git://bar/foo.git", onlybase=False),
+                         "bar__foo")
+
+    def test_slash_prefix(self):
+        self.assertEqual(collecting.path_to_name("/bar/foo.git", onlybase=False),
+                         "bar__foo")
 
 
 class TestMissingCollection(unittest.TestCase):

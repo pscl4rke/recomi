@@ -61,6 +61,19 @@ to `refs/*:refs/*` to prevent forced updates and ensure history is preserved.
 By default recomi will warn you (on stderr) when it clones a new repository.
 Set `warn` to false to clone without a warning.
 
+If the output of `list` contains paths
+(e.g. `foo/bar.git`)
+Recomi's default behaviour is to mimic `git clone`
+and it will only use the basename
+(resulting in `bar` or `bar.git` getting cloned).
+Setting `onlybase` to false will include the path prefix
+in the cloned destination,
+with slashes converted to double underscores
+(so `foo__bar` or `foo__bar.git` will be locally created).
+This is useful for hosting forges that file repositories
+under username or organisation subsections,
+as the subsections might have duplicate names.
+
 Another example:
 
     [clone]
@@ -102,7 +115,8 @@ but Recomi will detect this as a new repository and clone from scratch.
 By running `make dev` you can create a development virtualenv,
 and can run `./dev/venv/bin/recomi` to test out the program.
 
-Running `make test` will run the test suite.
+Running `make test` will run the test suite within the development
+virtualenv.
 
 By setting the environment variable `RECOMI_DRY_RUN=True` you can see which
 `git` commands would have been run without actually running them.

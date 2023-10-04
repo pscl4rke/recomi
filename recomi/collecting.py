@@ -9,10 +9,13 @@ from .shared import CmdError
 from . import git
 
 
-def path_to_name(path):
+def path_to_name(path, onlybase=True):
     if ":" in path:
         ssh_host, colon, path = path.partition(":")
-    name = os.path.basename(path)
+    if onlybase:
+        name = os.path.basename(path)
+    else:
+        name = path.lstrip("/").replace("/", "__")
     if name.endswith(".git"):
         name = name[:-4]
     return name
@@ -61,8 +64,9 @@ class Collection:
         return pattern.format(name=name, path=path)
 
     def upstream_repos(self):
+        onlybase = self.config["clone"].getboolean("onlybase", True)
         for path in self.upstream_list():
-            name = path_to_name(path)
+            name = path_to_name(path, onlybase=onlybase)
             yield git.UpstreamGitRepo(name, self.url_for(name, path), self.repo_type())
 
     def missing_repos(self):
