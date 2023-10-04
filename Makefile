@@ -1,13 +1,14 @@
 
 .PHONY: test
 test: | dev
-	cd dev && python3 -m unittest discover ./test
+	cd dev && ./venv/bin/coverage run -m unittest discover ./test
+	cd dev && ./venv/bin/coverage report -m
 
 dev:
 	mkdir dev
 	ln -s ../recomi ../test ../setup.cfg ../setup.py dev/.
 	python3 -m venv dev/venv
-	./dev/venv/bin/pip install --editable ./dev
+	./dev/venv/bin/pip install --editable ./dev[dev]
 
 export PYTHON_KEYRING_BACKEND := keyring.backends.null.Keyring
 release:
