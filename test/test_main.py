@@ -10,5 +10,34 @@ class TestOptionParsing(unittest.TestCase):
 
     def test_no_args(self):
         with mock.patch("argparse.ArgumentParser.error") as error_handler:
-            opts = main.parse_args([])
+            main.parse_args([])
         error_handler.assert_called_once()
+
+    def test_invalid_command(self):
+        with mock.patch("argparse.ArgumentParser.error") as error_handler:
+            main.parse_args(["notacommand", "."])
+        error_handler.assert_called()
+
+    def test_fetch(self):
+        opts = main.parse_args(["fetch", "."])
+        self.assertTrue(opts.command.should_fetch)
+        self.assertFalse(opts.command.should_gc)
+        self.assertFalse(opts.command.should_clone)
+
+    def test_gc(self):
+        opts = main.parse_args(["gc", "."])
+        self.assertFalse(opts.command.should_fetch)
+        self.assertTrue(opts.command.should_gc)
+        self.assertFalse(opts.command.should_clone)
+
+    def test_clone(self):
+        opts = main.parse_args(["clone", "."])
+        self.assertFalse(opts.command.should_fetch)
+        self.assertFalse(opts.command.should_gc)
+        self.assertTrue(opts.command.should_clone)
+
+    def test_mirror(self):
+        opts = main.parse_args(["mirror", "."])
+        self.assertTrue(opts.command.should_fetch)
+        self.assertTrue(opts.command.should_gc)
+        self.assertTrue(opts.command.should_clone)

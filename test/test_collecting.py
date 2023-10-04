@@ -41,6 +41,9 @@ class TestDummyCollectionWithConfig(unittest.TestCase):
         dummy = os.path.join(os.path.dirname(__file__), "DummyCollection")
         self.collection = collecting.Collection(dummy)
 
+    def test_clone_checking(self):
+        self.assertEqual(self.collection.clone_not_configured(), [])
+
     def test_upstream_list(self):
         names = self.collection.upstream_list()
         self.assertEqual(names, ["one", "two", "three"])

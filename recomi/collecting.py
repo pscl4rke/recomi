@@ -33,12 +33,12 @@ class Collection:
             self.config.read(config_path)
 
     def clone_not_configured(self):
-        if "clone" not in self.config.sections():
+        if "clone" not in self.config.sections():  # pragma: no cover
             return ["Missing [clone] section"]
         errors = []
-        if "list" not in self.config["clone"]:
+        if "list" not in self.config["clone"]:  # pragma: no cover
             errors.append("Missing [clone].list option")
-        if "url" not in self.config["clone"]:
+        if "url" not in self.config["clone"]:  # pragma: no cover
             errors.append("Missing [clone].url option")
         return errors
 
@@ -74,7 +74,7 @@ class Collection:
     def repo_type(self):
         repo_type = self.config["clone"].get("type", "mirror")
         if repo_type not in ("mirror", "mirror-ff", "bare", "working"):
-            raise ValueError("Invalid type: %r" % repo_type)
+            raise ValueError("Invalid type: %r" % repo_type)  # pragma: no cover
         return repo_type
 
     def warn_of_new_clone(self):

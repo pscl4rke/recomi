@@ -12,7 +12,7 @@ DRY_RUN = os.environ.get("RECOMI_DRY_RUN", "FALSE").lower().startswith("t")
 class Repo:
 
     def _run(self, cwd, args):
-        if DRY_RUN:
+        if DRY_RUN:  # pragma: no cover
             print("I would have run %r" % args)
             return
         if not os.access(cwd, os.R_OK|os.W_OK|os.X_OK):

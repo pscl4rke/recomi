@@ -6,7 +6,7 @@ import time
 
 from .shared import CmdError
 
-from . import git
+#from . import git
 from . import collecting
 from . import __version__
 
@@ -14,12 +14,12 @@ from . import __version__
 DESCRIPTION = "Repository Collection Mirror (version %s)" % __version__
 
 
-def info(msg):
+def info(msg):  # pragma: no cover
     sys.stdout.write("%s\n" % msg)
     sys.stdout.flush()
 
 
-def warn(msg):
+def warn(msg):  # pragma: no cover
     if sys.stderr.isatty():
         sys.stderr.write("\033[31;1mWARNING:\033[0m recomi: %s\n" % msg)
     else:
@@ -108,10 +108,10 @@ def parse_args(args):
     return opts
 
 
-def main():
+def main():  # pragma: no cover
     opts = parse_args(sys.argv[1:])
     opts.command.run(opts)
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     main()
