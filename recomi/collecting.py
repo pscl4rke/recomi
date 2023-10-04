@@ -82,4 +82,4 @@ class Collection:
         return repo_type
 
     def warn_of_new_clone(self):
-        return self.config["clone"].get("warn", True)
+        return self.config["clone"].getboolean("warn", True)
