@@ -86,6 +86,8 @@ class LoopingCommand:
 
 
 def command(value):
+    """Available commands: fetch, gc, clone, mirror"""
+    # Keep the docstring above up-to-date: it's used in help messages
     if value == "fetch":
         return LoopingCommand(fetch=True)
     elif value == "gc":
@@ -100,7 +102,7 @@ def command(value):
 
 def parse_args(args):
     parser = argparse.ArgumentParser(description=DESCRIPTION)
-    parser.add_argument("command", type=command)
+    parser.add_argument("command", type=command, help=command.__doc__)
     parser.add_argument("collections", nargs="+", type=collecting.Collection)
     opts = parser.parse_args(args)
     return opts
