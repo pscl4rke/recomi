@@ -18,7 +18,9 @@ class Repo:
         if not os.access(cwd, os.R_OK|os.W_OK|os.X_OK):
             # Subprocess will raise PermissionError if it cannot chdir to cwd
             raise CmdError("Insufficient permissions on %s" % cwd)
-        return_code = subprocess.call(args, cwd=cwd, stderr=subprocess.STDOUT)
+        env = dict(os.environ)
+        env["GIT_TERMINAL_PROMPT"] = "0"
+        return_code = subprocess.call(args, cwd=cwd, env=env, stderr=subprocess.STDOUT)
         if return_code != 0:
             raise CmdError("Failed")
 
