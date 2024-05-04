@@ -27,3 +27,23 @@ release:
 
 pre-release-checks:
 	pyroma .
+
+####
+
+docker-to-run += test-in-docker-3.7-slim-bullseye
+test-in-docker: $(docker-to-run)
+
+test-in-docker-%:
+	@echo
+	@echo "===================================================="
+	@echo "Testing with python:$*"
+	@echo "===================================================="
+	@echo
+	ephemerun \
+		-i "python:$*" \
+		-v ".:/root/src:ro" \
+		-W "/root" \
+		-S "cp -air ./src/* ." \
+		-S "pip --no-cache-dir install .[dev]" \
+		-S "coverage run -m unittest discover test/" \
+		-S "coverage report -m"
