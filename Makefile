@@ -42,16 +42,22 @@ pre-release-checks:
 ####
 
 docker-to-run += test-in-docker-3.7-slim-bullseye
+docker-to-run += test-in-docker-3.8-slim-bullseye
+docker-to-run += test-in-docker-3.9-slim-bullseye
+docker-to-run += test-in-docker-3.10-slim-bullseye
+docker-to-run += test-in-docker-3.11-slim-bullseye
+docker-to-run += test-in-docker-3.12-slim-bookworm
+docker-to-run += test-in-docker-3.13-slim-bookworm
 test-in-docker: $(docker-to-run)
 
 test-in-docker-%:
 	@echo
 	@echo "===================================================="
-	@echo "Testing with python:$*"
+	@echo "Testing with docker.io/library/python:$*"
 	@echo "===================================================="
 	@echo
 	ephemerun \
-		-i "python:$*" \
+		-i "docker.io/library/python:$*" \
 		-v ".:/root/src:ro" \
 		-W "/root" \
 		-S "cp -air ./src/* ." \
