@@ -17,6 +17,7 @@ new repositories upstream and then automatically clone them.
 
     $ recomi fetch /path/to/collection1 /path/to/collection2...
     $ recomi gc /path/to/collection1 /path/to/collection2...
+    $ recomi fsck /path/to/collection1 /path/to/collection2...
     $ recomi clone /path/to/collection1 /path/to/collection2...
     $ recomi mirror /path/to/collection1 /path/to/collection2...
 
@@ -35,7 +36,7 @@ Alternatively you can get the current development version with:
 
 ## Configuration
 
-The `fetch` and `gc` commands need no configuration.
+The `fetch`, `gc` and `fsck` commands need no configuration.
 
 For `clone` you need to create a config file inside each collection
 with the name `recomi.ini`.

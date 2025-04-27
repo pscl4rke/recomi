@@ -29,9 +29,10 @@ def warn(msg):  # pragma: no cover
 
 class LoopingCommand:
 
-    def __init__(self, fetch=False, gc=False, clone=False):
+    def __init__(self, fetch=False, gc=False, fsck=False, clone=False):
         self.should_fetch = fetch
         self.should_gc = gc
+        self.should_fsck = fsck
         self.should_clone = clone
 
     def run(self, opts):
@@ -49,6 +50,10 @@ class LoopingCommand:
                         info("\n[BEGIN gc %s]" % repo.path)
                         repo.gc()
                         info("[END gc]")
+                    if self.should_fsck:
+                        info("\n[BEGIN fsck %s]" % repo.path)
+                        repo.fsck()
+                        info("[END fsck]")
                 except CmdError as exc:
                     warn("%s: %r" % (repo.path, exc))
                     failures = failures + 1
@@ -86,12 +91,14 @@ class LoopingCommand:
 
 
 def command(value):
-    """Available commands: fetch, gc, clone, mirror"""
+    """Available commands: fetch, gc, fsck, clone, mirror"""
     # Keep the docstring above up-to-date: it's used in help messages
     if value == "fetch":
         return LoopingCommand(fetch=True)
     elif value == "gc":
         return LoopingCommand(gc=True)
+    elif value == "fsck":
+        return LoopingCommand(fsck=True)
     elif value == "clone":
         return LoopingCommand(clone=True)
     elif value == "mirror":

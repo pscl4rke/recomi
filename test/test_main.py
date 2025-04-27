@@ -23,22 +23,33 @@ class TestOptionParsing(unittest.TestCase):
         opts = main.parse_args(["fetch", "."])
         self.assertTrue(opts.command.should_fetch)
         self.assertFalse(opts.command.should_gc)
+        self.assertFalse(opts.command.should_fsck)
         self.assertFalse(opts.command.should_clone)
 
     def test_gc(self):
         opts = main.parse_args(["gc", "."])
         self.assertFalse(opts.command.should_fetch)
         self.assertTrue(opts.command.should_gc)
+        self.assertFalse(opts.command.should_fsck)
+        self.assertFalse(opts.command.should_clone)
+
+    def test_fsck(self):
+        opts = main.parse_args(["fsck", "."])
+        self.assertFalse(opts.command.should_fetch)
+        self.assertFalse(opts.command.should_gc)
+        self.assertTrue(opts.command.should_fsck)
         self.assertFalse(opts.command.should_clone)
 
     def test_clone(self):
         opts = main.parse_args(["clone", "."])
         self.assertFalse(opts.command.should_fetch)
         self.assertFalse(opts.command.should_gc)
+        self.assertFalse(opts.command.should_fsck)
         self.assertTrue(opts.command.should_clone)
 
     def test_mirror(self):
         opts = main.parse_args(["mirror", "."])
         self.assertTrue(opts.command.should_fetch)
         self.assertTrue(opts.command.should_gc)
+        self.assertFalse(opts.command.should_fsck)
         self.assertTrue(opts.command.should_clone)

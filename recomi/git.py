@@ -62,6 +62,11 @@ class LocalGitRepo(Repo):
                 "gc", "--auto"]
         self._run(self.path, args)
 
+    def fsck(self):
+        args = ["git",
+                "fsck", "--full"]
+        self._run(self.path, args)
+
 
 class UpstreamGitRepo(Repo):
 
