@@ -15,19 +15,15 @@ dev:
 	./dev/venv/bin/pip install --editable ./dev[dev]
 
 release: export PYTHON_KEYRING_BACKEND := keyring.backends.null.Keyring
-release: pyversion != python3 setup.py --version
-release: gitversion != git describe --tags
 release:
-	@echo 'Py version:  $(pyversion)'
-	@echo 'Git version: $(gitversion)'
-	test '$(pyversion)' = '$(gitversion)'
+	test '$(shell python3 setup.py --version)' = '$(shell git describe --tags)'
 	test ! -d dist
 	python3 setup.py sdist bdist_wheel
 	check-wheel-contents dist
 	twine check dist/*
 	twine upload dist/*
 	mv *egg-info -i dist
-	mv dist dist.$$(date +%Y%m%d.%H%M%S)
+	mv dist dist.$$(date +%Y-%m-%d.%H%M%S)
 	@echo
 	@echo
 	@echo REMEMBER TO PUSH ANY NEW GIT TAGS
