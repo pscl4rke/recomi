@@ -20,6 +20,7 @@ class Repo:
             raise CmdError("Insufficient permissions on %s" % cwd)
         env = dict(os.environ)
         env["GIT_TERMINAL_PROMPT"] = "0"
+        env["GIT_SSH_COMMAND"] = "ssh -o BatchMode=yes"
         return_code = subprocess.call(args, cwd=cwd, env=env, stderr=subprocess.STDOUT)
         if return_code != 0:
             raise CmdError("Failed")
