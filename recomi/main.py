@@ -117,7 +117,10 @@ def parse_args(args):
 
 def main():  # pragma: no cover
     opts = parse_args(sys.argv[1:])
-    opts.command.run(opts)
+    try:
+        opts.command.run(opts)
+    except KeyboardInterrupt:  # Ctrl-C (SigInt)
+        warn("Interrupted")
 
 
 if __name__ == "__main__":  # pragma: no cover
