@@ -9,6 +9,9 @@ from .shared import CmdError
 from . import git
 
 
+VERBOSE = os.environ.get("RECOMI_VERBOSE", "FALSE").lower().startswith("t")
+
+
 def path_to_name(path, onlybase=True):
     if ":" in path:
         ssh_host, colon, path = path.partition(":")
@@ -53,6 +56,8 @@ class Collection:
 
     def upstream_list(self):
         cmd = self.config["clone"]["list"]
+        if VERBOSE:
+            print("Running in a shell %r" % cmd)
         try:
             output = subprocess.check_output(cmd, shell=True, cwd=self.base_path)
         except subprocess.CalledProcessError as exc:

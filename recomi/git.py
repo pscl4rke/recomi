@@ -7,6 +7,7 @@ from .shared import CmdError
 
 
 DRY_RUN = os.environ.get("RECOMI_DRY_RUN", "FALSE").lower().startswith("t")
+VERBOSE = os.environ.get("RECOMI_VERBOSE", "FALSE").lower().startswith("t")
 
 
 class Repo:
@@ -21,6 +22,8 @@ class Repo:
         env = dict(os.environ)
         env["GIT_TERMINAL_PROMPT"] = "0"
         env["GIT_SSH_COMMAND"] = "ssh -o BatchMode=yes"
+        if VERBOSE:
+            print("Running %r" % args)
         return_code = subprocess.call(args, cwd=cwd, env=env, stderr=subprocess.STDOUT)
         if return_code != 0:
             raise CmdError("Failed")

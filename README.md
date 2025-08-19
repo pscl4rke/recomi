@@ -122,6 +122,9 @@ virtualenv.
 By setting the environment variable `RECOMI_DRY_RUN=True` you can see which
 `git` commands would have been run without actually running them.
 
+By setting the environment variable `RECOMI_VERBOSE=True` you can see more
+detailed information about what it is trying to do.
+
 ## Licence
 
 This software is licensed under the GPLv3.
