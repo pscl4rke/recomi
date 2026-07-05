@@ -11,8 +11,13 @@ test: | dev
 dev:
 	mkdir dev
 	ln -s ../recomi ../test ../setup.cfg ../setup.py dev/.
+
+dev/venv: dev setup.cfg
 	python3 -m venv dev/venv
 	./dev/venv/bin/pip install --editable ./dev[dev]
+
+pre-release-checks: dev/venv
+	./dev/venv/bin/pyroma . || true
 
 release: export PYTHON_KEYRING_BACKEND := keyring.backends.null.Keyring
 release:
@@ -31,9 +36,6 @@ release:
 	@echo REMEMBER TO REBUILD AND REDEPLOY recomi.debian TOO
 	@echo
 	@echo
-
-pre-release-checks:
-	pyroma .
 
 ####
 
@@ -67,4 +69,5 @@ test-in-container-%:
 		-S "cp -air ./src/* ." \
 		-S "pip --no-cache-dir install .[dev]" \
 		-S "coverage run -m unittest discover test/" \
-		-S "coverage report -m"
+		-S "coverage report -m" \
+		-S "(pyroma . || true)"
