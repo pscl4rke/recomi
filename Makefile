@@ -44,6 +44,7 @@ image-to-run += test-in-container-3.10-slim-bullseye
 image-to-run += test-in-container-3.11-slim-bullseye
 image-to-run += test-in-container-3.12-slim-bookworm
 image-to-run += test-in-container-3.13-slim-bookworm
+image-to-run += test-in-container-3.14-slim-trixie
 
 test-in-container: $(image-to-run)
 	@echo
