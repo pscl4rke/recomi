@@ -23,7 +23,7 @@ release: export PYTHON_KEYRING_BACKEND := keyring.backends.null.Keyring
 release:
 	test '$(shell python3 setup.py --version)' = '$(shell git describe --tags)'
 	test ! -d dist
-	python3 setup.py sdist bdist_wheel
+	pyproject-build
 	check-wheel-contents dist
 	twine check dist/*
 	twine upload dist/*
