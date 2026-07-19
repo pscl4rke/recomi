@@ -6,12 +6,30 @@ import time
 
 from .shared import CmdError
 
-#from . import git
 from . import collecting
-from . import __version__
 
 
-DESCRIPTION = "Repository Collection Mirror (version %s)" % __version__
+def version():
+    versions = []
+    # One type of version comes from __version__ embedded into the codebase.
+    # It works, but it has to be kept synchronised with the metadata files and
+    # the VCS tags.
+    try:
+        from . import __version__
+        versions.append(("embedded", __version__))
+    except Exception:
+        versions.append(("embedded", None))
+    # Another type of version is looked up with importlib, but was only added
+    # provisionally in Python 3.8 and accepted in 3.10.
+    try:
+        from importlib.metadata import version
+        versions.append(("distributed", version("recomi")))
+    except Exception:
+        versions.append(("distributed", None))
+    return ", ".join("%s=%r" % (k, v) for (k, v) in versions)
+
+
+DESCRIPTION = "Repository Collection Mirror (version: %s)" % version()
 
 
 def info(msg):  # pragma: no cover
@@ -109,6 +127,8 @@ def command(value):
 
 def parse_args(args):
     parser = argparse.ArgumentParser(description=DESCRIPTION)
+    parser.version = version()
+    parser.add_argument("-V", "--version", action="version")
     parser.add_argument("command", type=command, help=command.__doc__)
     parser.add_argument("collections", nargs="+", type=collecting.Collection)
     opts = parser.parse_args(args)

@@ -85,6 +85,7 @@ test-in-container-%:
 		-W "/root" \
 		-S "cp -air ./src/* ." \
 		-S "pip --no-cache-dir install .[dev]" \
+		-S "recomi --version" \
 		-S "coverage run -m unittest discover $(testdir)" \
 		-S "coverage report -m" \
 		-S "(pyroma . || true)"
